@@ -1,0 +1,7 @@
+hdl/adc_cap_x2.v
+verilog-library-barawn/hdl/flag_sync.v
+hdl/pl_gpio_adc_if.v
+bd/zynqmp/zynqmp.bd
+verilog-library-barawn/hdl/clk_div_ce.v
+hdl/zynqmp_wrapper.v
+hdl/teb0835_top.sv
