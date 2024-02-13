@@ -1,12 +1,12 @@
 # Si534x/7x/8x/9x Registers Script
 # 
 # Part: Si5395
-# Project File: X:\test_board\misc\SI5395\Si5395-RevA-B835-1-Project.slabtimeproj
+# Project File: X:\test_board\misc\SI5395\Si5395-RevA-B835PUEO-Project.slabtimeproj
 # Design ID: B835PUEO
 # Includes Pre/Post Download Control Register Writes: Yes
 # Device Revision: A
 # Creator: ClockBuilder Pro v4.11.0.1 [2023-09-14]
-# Created On: 2024-02-08 12:26:58 GMT-05:00
+# Created On: 2024-02-13 10:38:51 GMT-05:00
 Address,Data
 # 
 # Start configuration preamble
@@ -120,10 +120,10 @@ Address,Data
 0x00EC,0x00
 0x00ED,0x00
 0x0102,0x01
-0x0103,0x01
+0x0103,0x06
 0x0104,0x09
 0x0105,0x3E
-0x0106,0x18
+0x0106,0x19
 0x0108,0x01
 0x0109,0x09
 0x010A,0x3E
