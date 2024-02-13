@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x2256442D224DD2D3",
+      "boundary_crc": "0x2256442D4678A830",
       "device": "xczu25dr-ffve1156-1-e",
       "name": "zynqmp",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
@@ -3872,7 +3872,7 @@
             "value": "true"
           },
           "ADC0_Refclk_Freq": {
-            "value": "600.000"
+            "value": "375.000"
           },
           "ADC0_Sampling_Rate": {
             "value": "3"
@@ -3884,7 +3884,7 @@
             "value": "true"
           },
           "ADC1_Refclk_Freq": {
-            "value": "600.000"
+            "value": "375.000"
           },
           "ADC1_Sampling_Rate": {
             "value": "3"
@@ -3896,7 +3896,7 @@
             "value": "true"
           },
           "ADC2_Refclk_Freq": {
-            "value": "600.000"
+            "value": "375.000"
           },
           "ADC2_Sampling_Rate": {
             "value": "3"
@@ -3908,7 +3908,7 @@
             "value": "true"
           },
           "ADC3_Refclk_Freq": {
-            "value": "600.000"
+            "value": "375.000"
           },
           "ADC3_Sampling_Rate": {
             "value": "3"
