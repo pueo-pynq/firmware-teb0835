@@ -69,7 +69,7 @@ set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
 
 # guard against dumbassery
 set my_dbg_hub [get_debug_cores dbg_hub -quiet]
-if {[llength $my_debug_hub] > 0} {
+if {[llength $my_dbg_hub] > 0} {
    set_property C_CLK_INPUT_FREQ_HZ 300000000 $my_dbg_hub
    set_property C_ENABLE_CLK_DIVIDER false $my_dbg_hub
    set_property C_USER_SCAN_CHAIN 1 $my_dbg_hub
