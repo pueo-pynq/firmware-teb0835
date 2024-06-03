@@ -1,7 +1,7 @@
 //Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
-//Date        : Mon Feb  5 13:33:30 2024
+//Date        : Sun Jun  2 23:32:07 2024
 //Host        : ASCPHY-NC196428 running 64-bit major release  (build 9200)
 //Command     : generate_target zynqmp_wrapper.bd
 //Design      : zynqmp_wrapper
@@ -22,6 +22,8 @@ module zynqmp_wrapper
     S_AXIS_3_tdata,
     S_AXIS_3_tready,
     S_AXIS_3_tvalid,
+    UART_rxd,
+    UART_txd,
     Vp_Vn_0_v_n,
     Vp_Vn_0_v_p,
     adc0_clk_0_clk_n,
@@ -32,6 +34,7 @@ module zynqmp_wrapper
     adc2_clk_0_clk_p,
     adc3_clk_0_clk_n,
     adc3_clk_0_clk_p,
+    capture_o,
     clk_adc0_0,
     m00_axis_0_tdata,
     m00_axis_0_tready,
@@ -94,6 +97,8 @@ module zynqmp_wrapper
   input [127:0]S_AXIS_3_tdata;
   output S_AXIS_3_tready;
   input S_AXIS_3_tvalid;
+  input UART_rxd;
+  output UART_txd;
   input Vp_Vn_0_v_n;
   input Vp_Vn_0_v_p;
   input adc0_clk_0_clk_n;
@@ -104,6 +109,7 @@ module zynqmp_wrapper
   input adc2_clk_0_clk_p;
   input adc3_clk_0_clk_n;
   input adc3_clk_0_clk_p;
+  output capture_o;
   output clk_adc0_0;
   output [127:0]m00_axis_0_tdata;
   input m00_axis_0_tready;
@@ -167,6 +173,8 @@ module zynqmp_wrapper
   wire [127:0]S_AXIS_3_tdata;
   wire S_AXIS_3_tready;
   wire S_AXIS_3_tvalid;
+  wire UART_rxd;
+  wire UART_txd;
   wire Vp_Vn_0_v_n;
   wire Vp_Vn_0_v_p;
   wire adc0_clk_0_clk_n;
@@ -177,6 +185,7 @@ module zynqmp_wrapper
   wire adc2_clk_0_clk_p;
   wire adc3_clk_0_clk_n;
   wire adc3_clk_0_clk_p;
+  wire capture_o;
   wire clk_adc0_0;
   wire [127:0]m00_axis_0_tdata;
   wire m00_axis_0_tready;
@@ -241,6 +250,8 @@ module zynqmp_wrapper
         .S_AXIS_3_tdata(S_AXIS_3_tdata),
         .S_AXIS_3_tready(S_AXIS_3_tready),
         .S_AXIS_3_tvalid(S_AXIS_3_tvalid),
+        .UART_rxd(UART_rxd),
+        .UART_txd(UART_txd),
         .Vp_Vn_0_v_n(Vp_Vn_0_v_n),
         .Vp_Vn_0_v_p(Vp_Vn_0_v_p),
         .adc0_clk_0_clk_n(adc0_clk_0_clk_n),
@@ -251,6 +262,7 @@ module zynqmp_wrapper
         .adc2_clk_0_clk_p(adc2_clk_0_clk_p),
         .adc3_clk_0_clk_n(adc3_clk_0_clk_n),
         .adc3_clk_0_clk_p(adc3_clk_0_clk_p),
+        .capture_o(capture_o),
         .clk_adc0_0(clk_adc0_0),
         .m00_axis_0_tdata(m00_axis_0_tdata),
         .m00_axis_0_tready(m00_axis_0_tready),

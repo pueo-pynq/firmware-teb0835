@@ -65,6 +65,8 @@ module teb0835_top(
         input MGT_REFCLK_N // K29
         // no local SYSREF, we just effing make it up        
     );
+
+    parameter THIS_DESIGN = "BASIC";
     
     (* KEEP = "TRUE" *)
     wire ps_clk;
@@ -98,6 +100,17 @@ module teb0835_top(
     `DEFINE_AXI4S_MIN_IF( adc5_ , 128);
     `DEFINE_AXI4S_MIN_IF( adc6_ , 128);
     `DEFINE_AXI4S_MIN_IF( adc7_ , 128);
+    // buffer inputs
+    `DEFINE_AXI4S_MIN_IF( buf0_ , 128);
+    `DEFINE_AXI4S_MIN_IF( buf1_ , 128);
+    `DEFINE_AXI4S_MIN_IF( buf2_ , 128);
+    `DEFINE_AXI4S_MIN_IF( buf3_ , 128);
+    // PS UART
+    wire uart_to_ps;
+    wire uart_from_ps;
+    // PS capture
+    wire capture;
+    
     
     // sysref externally is 375/48 so we ultrafake here
     // this is a 1/24th divide
@@ -165,6 +178,19 @@ module teb0835_top(
                         .probe_in0(aclk_freq_ps),
                         .probe_in1(aclk_div2_freq_ps),
                         .probe_in2(aclk_locked_ps[1]));         
+
+    `DEFINE_WB_IF( bm_ , 22, 32 );
+    boardman_wrapper #(.CLOCK_RATE(100000000),
+                       .BAUD_RATE(1000000),
+                       .USE_ADDRESS("FALSE"))
+                       u_bm(.wb_clk_i(ps_clk),
+                            .wb_rst_i(1'b0),
+                            `CONNECT_WBM_IFM( wb_ , bm_ ),
+                            .burst_size_i(2'b00),
+                            .address_i(8'h00),
+                            .RX(uart_from_ps),
+                            .TX(uart_to_ps));
+
     zynqmp_wrapper u_ps(.Vp_Vn_0_v_p( VP ),
                         .Vp_Vn_0_v_n( VN ),
                         .sysref_in_0_diff_p( SYSREF_P ),
@@ -205,14 +231,42 @@ module teb0835_top(
                         .s_axi_aresetn_0( 1'b1 ),
                         .s_axis_aclk_0( aclk ),
                         .s_axis_aresetn_0( 1'b1 ),
-                        `CONNECT_AXI4S_MIN_IF( S_AXIS_0_ , adc0_ ),
-                        `CONNECT_AXI4S_MIN_IF( S_AXIS_1_ , adc1_ ),
-                        `CONNECT_AXI4S_MIN_IF( S_AXIS_2_ , adc2_ ),
-                        `CONNECT_AXI4S_MIN_IF( S_AXIS_3_ , adc3_ ),
+                        `CONNECT_AXI4S_MIN_IF( S_AXIS_0_ , buf0_ ),
+                        `CONNECT_AXI4S_MIN_IF( S_AXIS_1_ , buf1_ ),
+                        `CONNECT_AXI4S_MIN_IF( S_AXIS_2_ , buf2_ ),
+                        `CONNECT_AXI4S_MIN_IF( S_AXIS_3_ , buf3_ ),
+                        
+                        .UART_txd(uart_from_ps),
+                        .UART_rxd(uart_to_ps),
+                        
+                        .capture_o(capture),
                         
                         .pl_clk0( ps_clk ),
                         .pl_resetn0( ps_reset ),
                         .clk_adc0_0(adc_clk),
                         .user_sysref_adc_0( my_sysref ));    
+
+    generate
+        if (THIS_DESIGN == "BASIC") begin : BSC
+            basic_design u_design( .wb_clk_i(ps_clk),
+                                   .wb_rst_i(1'b0),
+                                    `CONNECT_WBS_IFS( wb_ , bm_ ),
+                                    .aclk(aclk),
+                                    .aresetn(1'b1),
+                                    `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
+                                    // buffers
+                                    `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ));            
+        end
+    endgenerate
 
 endmodule
