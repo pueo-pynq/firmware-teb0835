@@ -6,7 +6,7 @@ import tebrfclk
 import numpy as np
 
 class tebMTS(Overlay):
-    def __init__(self, bitfile_name='teb0835_top.bit', reload=False):
+    def __init__(self, bitfile_name='teb0835_top.bit', reload=False, **kwargs):
         output = subprocess.check_output(['lsmod'])
         if b'zocl' in output:
             if reload == False:

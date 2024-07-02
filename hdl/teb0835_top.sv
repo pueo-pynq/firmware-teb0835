@@ -105,6 +105,12 @@ module teb0835_top(
     `DEFINE_AXI4S_MIN_IF( buf1_ , 128);
     `DEFINE_AXI4S_MIN_IF( buf2_ , 128);
     `DEFINE_AXI4S_MIN_IF( buf3_ , 128);
+    
+    // DAC output. Note that the DAC works
+    // at aclk rate, not aclk_div2 rate like some other
+    // designs.
+    `DEFINE_AXI4S_MIN_IF( dac0_ , 128 );   
+    
     // PS UART
     wire uart_to_ps;
     wire uart_from_ps;
@@ -219,6 +225,10 @@ module teb0835_top(
                         .vin3_01_0_v_n( ADC6_VIN_N ),
                         .vin3_23_0_v_p( ADC7_VIN_P ),
                         .vin3_23_0_v_n( ADC7_VIN_N ),
+                        
+                        .vout00_0_v_n( DAC0_VOUT_P ),
+                        .vout00_0_v_p( DAC0_VOUT_N ),
+                        
                         `CONNECT_AXI4S_MIN_IF( m00_axis_0_ , adc0_ ),
                         `CONNECT_AXI4S_MIN_IF( m02_axis_0_ , adc1_ ),
                         `CONNECT_AXI4S_MIN_IF( m10_axis_0_ , adc2_ ),
@@ -227,6 +237,9 @@ module teb0835_top(
                         `CONNECT_AXI4S_MIN_IF( m22_axis_0_ , adc5_ ),
                         `CONNECT_AXI4S_MIN_IF( m30_axis_0_ , adc6_ ),
                         `CONNECT_AXI4S_MIN_IF( m32_axis_0_ , adc7_ ),
+                        
+                        `CONNECT_AXI4S_MIN_IF( s00_axis_0_ , dac0_ ),
+                        
                         .s_axi_aclk_0( aclk_div2 ),
                         .s_axi_aresetn_0( 1'b1 ),
                         .s_axis_aclk_0( aclk ),
@@ -248,6 +261,8 @@ module teb0835_top(
 
     generate
         if (THIS_DESIGN == "BASIC") begin : BSC
+            // basic design doesn't bother with the DAC,
+            // whatever.
             basic_design u_design( .wb_clk_i(ps_clk),
                                    .wb_rst_i(1'b0),
                                     `CONNECT_WBS_IFS( wb_ , bm_ ),

@@ -62,6 +62,10 @@ module zynqmp_wrapper
     m32_axis_0_tvalid,
     pl_clk0,
     pl_resetn0,
+    s00_axis_0_tdata,
+    s00_axis_0_tready,
+    s00_axis_0_tvalid,
+
     s_axi_aclk_0,
     s_axi_aresetn_0,
     s_axis_aclk_0,
@@ -69,6 +73,7 @@ module zynqmp_wrapper
     sysref_in_0_diff_n,
     sysref_in_0_diff_p,
     user_sysref_adc_0,
+    
     vin0_01_0_v_n,
     vin0_01_0_v_p,
     vin0_23_0_v_n,
@@ -84,7 +89,9 @@ module zynqmp_wrapper
     vin3_01_0_v_n,
     vin3_01_0_v_p,
     vin3_23_0_v_n,
-    vin3_23_0_v_p);
+    vin3_23_0_v_p,
+    vout00_0_v_n,
+    vout00_0_v_p);
   input [127:0]S_AXIS_0_tdata;
   output S_AXIS_0_tready;
   input S_AXIS_0_tvalid;
@@ -137,6 +144,11 @@ module zynqmp_wrapper
   output m32_axis_0_tvalid;
   output pl_clk0;
   output pl_resetn0;
+
+  input [127:0]s00_axis_0_tdata;
+  output s00_axis_0_tready;
+  input s00_axis_0_tvalid;
+
   input s_axi_aclk_0;
   input s_axi_aresetn_0;
   input s_axis_aclk_0;
@@ -160,6 +172,9 @@ module zynqmp_wrapper
   input vin3_01_0_v_p;
   input vin3_23_0_v_n;
   input vin3_23_0_v_p;
+
+  output vout00_0_v_n;
+  output vout00_0_v_p;
 
   wire [127:0]S_AXIS_0_tdata;
   wire S_AXIS_0_tready;
@@ -213,6 +228,11 @@ module zynqmp_wrapper
   wire m32_axis_0_tvalid;
   wire pl_clk0;
   wire pl_resetn0;
+
+  wire [127:0]s00_axis_0_tdata;
+  wire s00_axis_0_tready;
+  wire s00_axis_0_tvalid;
+
   wire s_axi_aclk_0;
   wire s_axi_aresetn_0;
   wire s_axis_aclk_0;
@@ -236,6 +256,9 @@ module zynqmp_wrapper
   wire vin3_01_0_v_p;
   wire vin3_23_0_v_n;
   wire vin3_23_0_v_p;
+
+  wire vout00_0_v_n;
+  wire vout00_0_v_p;
 
   zynqmp zynqmp_i
        (.S_AXIS_0_tdata(S_AXIS_0_tdata),
@@ -290,6 +313,9 @@ module zynqmp_wrapper
         .m32_axis_0_tvalid(m32_axis_0_tvalid),
         .pl_clk0(pl_clk0),
         .pl_resetn0(pl_resetn0),
+        .s00_axis_0_tdata(s00_axis_0_tdata),
+        .s00_axis_0_tready(s00_axis_0_tready),
+        .s00_axis_0_tvalid(s00_axis_0_tvalid),
         .s_axi_aclk_0(s_axi_aclk_0),
         .s_axi_aresetn_0(s_axi_aresetn_0),
         .s_axis_aclk_0(s_axis_aclk_0),
@@ -312,5 +338,7 @@ module zynqmp_wrapper
         .vin3_01_0_v_n(vin3_01_0_v_n),
         .vin3_01_0_v_p(vin3_01_0_v_p),
         .vin3_23_0_v_n(vin3_23_0_v_n),
-        .vin3_23_0_v_p(vin3_23_0_v_p));
+        .vin3_23_0_v_p(vin3_23_0_v_p),
+        .vout00_0_v_n(vout00_0_v_n),
+        .vout00_0_v_p(vout00_0_v_p));
 endmodule
