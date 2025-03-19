@@ -66,7 +66,7 @@ module teb0835_top(
         // no local SYSREF, we just effing make it up        
     );
 
-    parameter THIS_DESIGN = "BASIC";
+    parameter THIS_DESIGN = "LOWAMPA";
     
     (* KEEP = "TRUE" *)
     wire ps_clk;
@@ -92,19 +92,19 @@ module teb0835_top(
     refclk_wiz u_wiz(.reset(1'b0),.clk_in1(aclk),
                      .clk_out1(aclk_div2),
                      .locked(aclk_locked));
-    `DEFINE_AXI4S_MIN_IF( adc0_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc1_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc2_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc3_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc4_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc5_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc6_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc7_ , 128);
+    `DEFINE_AXI4S_MIN_IF( adc0_ , 64);
+    `DEFINE_AXI4S_MIN_IF( adc1_ , 64);
+    `DEFINE_AXI4S_MIN_IF( adc2_ , 64);
+    `DEFINE_AXI4S_MIN_IF( adc3_ , 64);
+    `DEFINE_AXI4S_MIN_IF( adc4_ , 64);
+    `DEFINE_AXI4S_MIN_IF( adc5_ , 64);
+    `DEFINE_AXI4S_MIN_IF( adc6_ , 64);
+    `DEFINE_AXI4S_MIN_IF( adc7_ , 64);
     // buffer inputs
-    `DEFINE_AXI4S_MIN_IF( buf0_ , 128);
-    `DEFINE_AXI4S_MIN_IF( buf1_ , 128);
-    `DEFINE_AXI4S_MIN_IF( buf2_ , 128);
-    `DEFINE_AXI4S_MIN_IF( buf3_ , 128);
+    `DEFINE_AXI4S_MIN_IF( buf0_ , 64);
+    `DEFINE_AXI4S_MIN_IF( buf1_ , 64);
+    `DEFINE_AXI4S_MIN_IF( buf2_ , 64);
+    `DEFINE_AXI4S_MIN_IF( buf3_ , 64);
     // PS UART
     wire uart_to_ps;
     wire uart_from_ps;
@@ -266,6 +266,54 @@ module teb0835_top(
                                     `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
                                     `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
                                     `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ));            
+        end
+        if (THIS_DESIGN == "LOWPASS") begin : LWPS
+            lowpass_design u_design( .wb_clk_i(ps_clk),
+                                   .wb_rst_i(1'b0),
+                                    `CONNECT_WBS_IFS( wb_ , bm_ ),
+                                    .aclk(aclk),
+                                    .aresetn(1'b1),
+                                    `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
+                                    // buffers
+                                    `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ )//,
+                                    // dacs
+                                    //`CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ),
+                                    //`CONNECT_AXI4S_MIN_IF( dac1_ , dac1_ )
+                                    );            
+        end
+        if (THIS_DESIGN == "LOWAMPA") begin : LWAMP
+            lowampa_design u_design( .wb_clk_i(ps_clk),
+                                   .wb_rst_i(1'b0),
+                                    `CONNECT_WBS_IFS( wb_ , bm_ ),
+                                    .aclk(aclk),
+                                    .aresetn(1'b1),
+                                    `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
+                                    `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
+                                    // buffers
+                                    `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
+                                    `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ )//,
+                                    // dacs
+                                    //`CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ),
+                                    //`CONNECT_AXI4S_MIN_IF( dac1_ , dac1_ )
+                                    );            
         end
     endgenerate
 
