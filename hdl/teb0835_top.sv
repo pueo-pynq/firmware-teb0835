@@ -66,7 +66,7 @@ module teb0835_top(
         // no local SYSREF, we just effing make it up        
     );
 
-    parameter THIS_DESIGN = "BASIC";
+    parameter THIS_DESIGN = "FILTER_CHAIN";
     
     (* KEEP = "TRUE" *)
     wire ps_clk;
@@ -306,6 +306,36 @@ module teb0835_top(
                                   `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ )
                                   );            
             
+        end else if (THIS_DESIGN == "FILTER_CHAIN") begin : FILTER_CHAIN
+            `DEFINE_AXI4S_MIN_IF( design_dac0_ , 128 );
+            `DEFINE_AXI4S_MIN_IF( design_dac1_ , 128 );
+            // `DEFINE_AXI4S_MIN_IF( design_dac2_ , 128 );
+            // `DEFINE_AXI4S_MIN_IF( design_dac3_ , 128 );
+            // `DEFINE_AXI4S_MIN_IF( design_dac4_ , 128 );
+            // `DEFINE_AXI4S_MIN_IF( design_dac5_ , 128 );
+            // `DEFINE_AXI4S_MIN_IF( design_dac6_ , 128 );
+            // `DEFINE_AXI4S_MIN_IF( design_dac7_ , 128 );
+            
+            filter_chain_design #(.NBEAMS(2))
+                              u_design(     .wb_clk_i(ps_clk),
+                                            .wb_rst_i(1'b0),
+                                            `CONNECT_WBS_IFM( wb_ , bm_ ),    
+                                            .aclk(aclk),
+                                            .reset_i(1'b0),
+                                            `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
+                                            `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
+                                            `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
+                                            `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
+                                            `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
+                                            `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
+                                            `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
+                                            `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
+                                            // Buffers
+                                            `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
+                                            `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
+                                            // DACs
+                                            `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ));
+
         end
     endgenerate
 
