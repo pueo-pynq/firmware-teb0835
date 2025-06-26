@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xC13ADD55EFE26868",
+      "boundary_crc": "0xC9147D180EABE1D5",
       "device": "xczu25dr-ffve1156-1-e",
       "name": "zynqmp",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
@@ -1158,7 +1158,17 @@
       "vout00_0": {
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:interface:diff_analog_io:1.0",
-        "vlnv": "xilinx.com:interface:diff_analog_io_rtl:1.0"
+        "vlnv": "xilinx.com:interface:diff_analog_io_rtl:1.0",
+        "port_maps": {
+          "V_N": {
+            "physical_name": "vout00_0_v_n",
+            "direction": "O"
+          },
+          "V_P": {
+            "physical_name": "vout00_0_v_p",
+            "direction": "O"
+          }
+        }
       },
       "dac0_clk_0": {
         "mode": "Slave",
@@ -1249,11 +1259,6 @@
             "direction": "I"
           }
         }
-      },
-      "vout02_0": {
-        "mode": "Master",
-        "vlnv_bus_definition": "xilinx.com:interface:diff_analog_io:1.0",
-        "vlnv": "xilinx.com:interface:diff_analog_io_rtl:1.0"
       }
     },
     "ports": {
@@ -1415,9 +1420,6 @@
       "user_sysref_adc_0": {
         "direction": "I"
       },
-      "UART_txd": {
-        "direction": "O"
-      },
       "UART_rxd": {
         "direction": "I"
       },
@@ -1541,6 +1543,9 @@
             "value_src": "default"
           }
         }
+      },
+      "UART_txd": {
+        "direction": "O"
       }
     },
     "components": {
@@ -7038,6 +7043,12 @@
           "usp_rf_data_converter_0/m32_axis"
         ]
       },
+      "usp_rf_data_converter_0_vout00": {
+        "interface_ports": [
+          "vout00_0",
+          "usp_rf_data_converter_0/vout00"
+        ]
+      },
       "vin0_01_0_1": {
         "interface_ports": [
           "vin0_01_0",
@@ -7100,6 +7111,12 @@
       }
     },
     "nets": {
+      "UART_rxd_1": {
+        "ports": [
+          "UART_rxd",
+          "zynq_ultra_ps_e_0/emio_uart1_rxd"
+        ]
+      },
       "adc_cap_0_done": {
         "ports": [
           "adc_cap_0/done",
@@ -7122,12 +7139,6 @@
         "ports": [
           "adc_cap_3/done",
           "xlconcat_0/In3"
-        ]
-      },
-      "axi_uartlite_0_tx": {
-        "ports": [
-          "axi_uartlite_0/tx",
-          "zynq_ultra_ps_e_0/emio_uart1_rxd"
         ]
       },
       "capture_1": {
@@ -7280,7 +7291,7 @@
       "zynq_ultra_ps_e_0_emio_uart1_txd": {
         "ports": [
           "zynq_ultra_ps_e_0/emio_uart1_txd",
-          "axi_uartlite_0/rx"
+          "UART_txd"
         ]
       },
       "zynq_ultra_ps_e_0_pl_clk0": {

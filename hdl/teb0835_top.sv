@@ -66,206 +66,227 @@ module teb0835_top(
         // no local SYSREF, we just effing make it up        
     );
 
-    parameter THIS_DESIGN = "FILTER_CHAIN_WISHBONELESS";
-    
-    (* KEEP = "TRUE" *)
-    wire ps_clk;
-    wire ps_reset;
-    
-    // adc axi4-stream clock
-    wire aclk_in;
-    wire aclk;
-    wire aclk_div2;
-    wire aclk_locked;
-    IBUFDS_GTE4 #(.REFCLK_EN_TX_PATH(1'b0),
-                  .REFCLK_HROW_CK_SEL(2'b00),
-                  .REFCLK_ICNTL_RX(2'b00)) 
-                  u_ibuf(.I(MGT_REFCLK_P),.IB(MGT_REFCLK_N),.CEB(1'b0),
-                       .ODIV2(aclk_in));
-    BUFG_GT u_bufg(.I(aclk_in),
-                   .O(aclk),
-                   .CE(1'b1),
-                   .CEMASK(1'b0),
-                   .CLR(1'b0),
-                   .CLRMASK(1'b0),
-                   .DIV(3'b000));
-    refclk_wiz u_wiz(.reset(1'b0),.clk_in1(aclk),
-                     .clk_out1(aclk_div2),
-                     .locked(aclk_locked));
-    `DEFINE_AXI4S_MIN_IF( adc0_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc1_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc2_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc3_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc4_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc5_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc6_ , 128);
-    `DEFINE_AXI4S_MIN_IF( adc7_ , 128);
-    // buffer inputs
-    `DEFINE_AXI4S_MIN_IF( buf0_ , 128);
-    `DEFINE_AXI4S_MIN_IF( buf1_ , 128);
-    `DEFINE_AXI4S_MIN_IF( buf2_ , 128);
-    `DEFINE_AXI4S_MIN_IF( buf3_ , 128);
-    
-    // DAC output. Note that the DAC works
-    // at aclk rate, not aclk_div2 rate like some other
-    // designs.
-    `DEFINE_AXI4S_MIN_IF( dac0_ , 128 );  
-    
-    // PS UART
-    wire uart_to_ps;
-    wire uart_from_ps;
-    // PS capture
-    wire capture;
-    
-    
-    // sysref externally is 375/48 so we ultrafake here
-    // this is a 1/24th divide
-    wire toggle_sysref;
-    clk_div_ce #(.CLK_DIVIDE(23),.EXTRA_DIV2("FALSE"))
-        u_sysref_toggle_ce(.clk(aclk),.ce(toggle_sysref));
-    reg my_sysref = 0;
-    always @(posedge aclk) if (toggle_sysref) my_sysref <= ~my_sysref;    
-    
-    wire adc_clk;
-    
-    reg [31:0] pps_counter = {32{1'b0}};
-    reg pps_flag = 0;
-    wire pps_flag_aclk;
-    wire aclk_freq_done;
-    wire pps_flag_aclkdiv2;
-    wire aclkdiv2_freq_done;
-    
-    reg [31:0] aclk_counter = {32{1'b0}};
-    (* CUSTOM_CC_SRC = "ACLK" *)
-    reg [31:0] aclk_freq = {32{1'b0}};
-    (* CUSTOM_CC_DST = "PSCLK" *)
-    reg [31:0] aclk_freq_ps = {32{1'b0}};
-    
-    // dafuq
-    reg [31:0] aclk_div2_counter = {32{1'b0}};
-    (* CUSTOM_CC_SRC = "ACLKDIV2" *)
-    reg [31:0] aclk_div2_freq = {32{1'b0}};
-    (* CUSTOM_CC_DST = "PSCLK" *)
-    reg [31:0] aclk_div2_freq_ps = {32{1'b0}};
-    
-    (* ASYNC_REG = "TRUE" *)
-    reg [1:0] aclk_locked_ps = {2{1'b0}};
-    
-    always @(posedge aclk) begin
-        if (pps_flag_aclk) aclk_counter <= {32{1'b0}};
-        else aclk_counter <= aclk_counter + 1;
+    parameter THIS_DESIGN = "FILTER_CHAIN_LOWPASS_ONLY";
         
-        if (pps_flag_aclk) aclk_freq <= aclk_counter;
-    end
-    always @(posedge aclk_div2) begin
-        if (pps_flag_aclkdiv2) aclk_div2_counter <= {32{1'b0}};
-        else aclk_div2_counter <= aclk_div2_counter + 1;
+        (* KEEP = "TRUE" *)
+        wire ps_clk;
+        wire ps_reset;
         
-        if (pps_flag_aclkdiv2) aclk_div2_freq <= aclk_div2_counter;        
-    end        
-    always @(posedge ps_clk) begin
-        if (pps_counter == 100000000 - 1) pps_counter <= {32{1'b0}};
-        else pps_counter <= pps_counter + 1;
+        // adc axi4-stream clock
+        wire aclk_in;
+        wire aclk;
+        wire aclk_div2;
+        wire aclk_locked;
+        IBUFDS_GTE4 #(.REFCLK_EN_TX_PATH(1'b0),
+                    .REFCLK_HROW_CK_SEL(2'b00),
+                    .REFCLK_ICNTL_RX(2'b00)) 
+                    u_ibuf(.I(MGT_REFCLK_P),.IB(MGT_REFCLK_N),.CEB(1'b0),
+                        .ODIV2(aclk_in));
+        BUFG_GT u_bufg(.I(aclk_in),
+                    .O(aclk),
+                    .CE(1'b1),
+                    .CEMASK(1'b0),
+                    .CLR(1'b0),
+                    .CLRMASK(1'b0),
+                    .DIV(3'b000));
+        refclk_wiz u_wiz(.reset(1'b0),.clk_in1(aclk),
+                        .clk_out1(aclk_div2),
+                        .locked(aclk_locked));
+        `DEFINE_AXI4S_MIN_IF( adc0_ , 128);
+        `DEFINE_AXI4S_MIN_IF( adc1_ , 128);
+        `DEFINE_AXI4S_MIN_IF( adc2_ , 128);
+        `DEFINE_AXI4S_MIN_IF( adc3_ , 128);
+        `DEFINE_AXI4S_MIN_IF( adc4_ , 128);
+        `DEFINE_AXI4S_MIN_IF( adc5_ , 128);
+        `DEFINE_AXI4S_MIN_IF( adc6_ , 128);
+        `DEFINE_AXI4S_MIN_IF( adc7_ , 128);
+        // buffer inputs
+        `DEFINE_AXI4S_MIN_IF( buf0_ , 128);
+        `DEFINE_AXI4S_MIN_IF( buf1_ , 128);
+        `DEFINE_AXI4S_MIN_IF( buf2_ , 128);
+        `DEFINE_AXI4S_MIN_IF( buf3_ , 128);
+            
+        // DAC output. Note that the DAC works
+        // at aclk rate, not aclk_div2 rate like some other
+        // designs.
+        `DEFINE_AXI4S_MIN_IF( dac0_ , 128 );  
         
-        pps_flag <= (pps_counter == {32{1'b0}});
-        if (aclk_freq_done) aclk_freq_ps <= aclk_freq;
+        // PS UART
+        wire uart_to_ps;
+        wire uart_from_ps;
+        // PS capture
+        wire capture;
         
-        if (aclkdiv2_freq_done) aclk_div2_freq_ps <= aclk_div2_freq;
         
-        aclk_locked_ps <= { aclk_locked_ps[0], aclk_locked };
-    end
-    flag_sync u_pps_flag_sync(.in_clkA(pps_flag),.out_clkB(pps_flag_aclk),.clkA(ps_clk),.clkB(aclk));
-    flag_sync u_aclk_freq_done_sync(.in_clkA(pps_flag_aclk),.out_clkB(aclk_freq_done),.clkA(aclk),.clkB(ps_clk));
+        // sysref externally is 375/48 so we ultrafake here
+        // this is a 1/24th divide
+        wire toggle_sysref;
+        clk_div_ce #(.CLK_DIVIDE(23),.EXTRA_DIV2("FALSE"))
+            u_sysref_toggle_ce(.clk(aclk),.ce(toggle_sysref));
+        reg my_sysref = 0;
+        always @(posedge aclk) if (toggle_sysref) my_sysref <= ~my_sysref;    
+        
+        wire adc_clk;
+        
+        reg [31:0] pps_counter = {32{1'b0}};
+        reg pps_flag = 0;
+        wire pps_flag_aclk;
+        wire aclk_freq_done;
+        wire pps_flag_aclkdiv2;
+        wire aclkdiv2_freq_done;
+        
+        reg [31:0] aclk_counter = {32{1'b0}};
+        (* CUSTOM_CC_SRC = "ACLK" *)
+        reg [31:0] aclk_freq = {32{1'b0}};
+        (* CUSTOM_CC_DST = "PSCLK" *)
+        reg [31:0] aclk_freq_ps = {32{1'b0}};
+        
+        // dafuq
+        reg [31:0] aclk_div2_counter = {32{1'b0}};
+        (* CUSTOM_CC_SRC = "ACLKDIV2" *)
+        reg [31:0] aclk_div2_freq = {32{1'b0}};
+        (* CUSTOM_CC_DST = "PSCLK" *)
+        reg [31:0] aclk_div2_freq_ps = {32{1'b0}};
+        
+        (* ASYNC_REG = "TRUE" *)
+        reg [1:0] aclk_locked_ps = {2{1'b0}};
+        
+        always @(posedge aclk) begin
+            if (pps_flag_aclk) aclk_counter <= {32{1'b0}};
+            else aclk_counter <= aclk_counter + 1;
+            
+            if (pps_flag_aclk) aclk_freq <= aclk_counter;
+        end
+        always @(posedge aclk_div2) begin
+            if (pps_flag_aclkdiv2) aclk_div2_counter <= {32{1'b0}};
+            else aclk_div2_counter <= aclk_div2_counter + 1;
+            
+            if (pps_flag_aclkdiv2) aclk_div2_freq <= aclk_div2_counter;        
+        end        
+        always @(posedge ps_clk) begin
+            if (pps_counter == 100000000 - 1) pps_counter <= {32{1'b0}};
+            else pps_counter <= pps_counter + 1;
+            
+            pps_flag <= (pps_counter == {32{1'b0}});
+            if (aclk_freq_done) aclk_freq_ps <= aclk_freq;
+            
+            if (aclkdiv2_freq_done) aclk_div2_freq_ps <= aclk_div2_freq;
+            
+            aclk_locked_ps <= { aclk_locked_ps[0], aclk_locked };
+        end
+        flag_sync u_pps_flag_sync(.in_clkA(pps_flag),.out_clkB(pps_flag_aclk),.clkA(ps_clk),.clkB(aclk));
+        flag_sync u_aclk_freq_done_sync(.in_clkA(pps_flag_aclk),.out_clkB(aclk_freq_done),.clkA(aclk),.clkB(ps_clk));
 
-    flag_sync u_pps_flag_sync_div2(.in_clkA(pps_flag),.out_clkB(pps_flag_aclkdiv2),.clkA(ps_clk),.clkB(aclk_div2));
-    flag_sync u_aclkdiv2_done_sync(.in_clkA(pps_flag_aclkdiv2),.out_clkB(aclkdiv2_freq_done),.clkA(aclk_div2),.clkB(ps_clk));
-    
-    clk_count_vio u_vio(.clk(ps_clk),
-                        .probe_in0(aclk_freq_ps),
-                        .probe_in1(aclk_div2_freq_ps),
-                        .probe_in2(aclk_locked_ps[1]));         
+        flag_sync u_pps_flag_sync_div2(.in_clkA(pps_flag),.out_clkB(pps_flag_aclkdiv2),.clkA(ps_clk),.clkB(aclk_div2));
+        flag_sync u_aclkdiv2_done_sync(.in_clkA(pps_flag_aclkdiv2),.out_clkB(aclkdiv2_freq_done),.clkA(aclk_div2),.clkB(ps_clk));
+        
+        clk_count_vio u_vio(.clk(ps_clk),
+                            .probe_in0(aclk_freq_ps),
+                            .probe_in1(aclk_div2_freq_ps),
+                            .probe_in2(aclk_locked_ps[1]));         
 
-    `DEFINE_WB_IF( bm_ , 22, 32 );
-    boardman_wrapper #(.CLOCK_RATE(100000000),
-                       .BAUD_RATE(1000000),
-                       .USE_ADDRESS("FALSE"))
-                       u_bm(.wb_clk_i(ps_clk),
-                            .wb_rst_i(1'b0),
-                            `CONNECT_WBM_IFM( wb_ , bm_ ),
-                            .burst_size_i(2'b00),
-                            .address_i(8'h00),
-                            .RX(uart_from_ps),
-                            .TX(uart_to_ps));
+        `DEFINE_WB_IF( bm_ , 22, 32 );
+        boardman_wrapper #(.CLOCK_RATE(100000000),
+                        .BAUD_RATE(1000000),
+                        .USE_ADDRESS("FALSE"))
+                        u_bm(.wb_clk_i(ps_clk),
+                                .wb_rst_i(1'b0),
+                                `CONNECT_WBM_IFM( wb_ , bm_ ),
+                                .burst_size_i(2'b00),
+                                .address_i(8'h00),
+                                .RX(uart_from_ps),
+                                .TX(uart_to_ps));
 
-    zynqmp_wrapper u_ps(.Vp_Vn_0_v_p( VP ),
-                        .Vp_Vn_0_v_n( VN ),
-                        .sysref_in_0_diff_p( SYSREF_P ),
-                        .sysref_in_0_diff_n( SYSREF_N ),
-                        .adc0_clk_0_clk_p( ADC0_CLK_P ),
-                        .adc0_clk_0_clk_n( ADC0_CLK_N ),
-                        .adc1_clk_0_clk_p( ADC2_CLK_P ),
-                        .adc1_clk_0_clk_n( ADC2_CLK_N ),
-                        .adc2_clk_0_clk_p( ADC4_CLK_P ),
-                        .adc2_clk_0_clk_n( ADC4_CLK_N ),
-                        .adc3_clk_0_clk_p( ADC6_CLK_P ),
-                        .adc3_clk_0_clk_n( ADC6_CLK_N ),
-                        .vin0_01_0_v_p( ADC0_VIN_P ),
-                        .vin0_01_0_v_n( ADC0_VIN_N ),
-                        .vin0_23_0_v_p( ADC1_VIN_P ),
-                        .vin0_23_0_v_n( ADC1_VIN_N ),
-                        .vin1_01_0_v_p( ADC2_VIN_P ),
-                        .vin1_01_0_v_n( ADC2_VIN_N ),
-                        .vin1_23_0_v_p( ADC3_VIN_P ),
-                        .vin1_23_0_v_n( ADC3_VIN_N ),
-                        .vin2_01_0_v_p( ADC4_VIN_P ),
-                        .vin2_01_0_v_n( ADC4_VIN_N ),
-                        .vin2_23_0_v_p( ADC5_VIN_P ),
-                        .vin2_23_0_v_n( ADC5_VIN_N ),
-                        .vin3_01_0_v_p( ADC6_VIN_P ),
-                        .vin3_01_0_v_n( ADC6_VIN_N ),
-                        .vin3_23_0_v_p( ADC7_VIN_P ),
-                        .vin3_23_0_v_n( ADC7_VIN_N ),
-                        
-                        .vout00_0_v_n( DAC0_VOUT_P ),
-                        .vout00_0_v_p( DAC0_VOUT_N ),
-                        
-                        `CONNECT_AXI4S_MIN_IF( m00_axis_0_ , adc0_ ),
-                        `CONNECT_AXI4S_MIN_IF( m02_axis_0_ , adc1_ ),
-                        `CONNECT_AXI4S_MIN_IF( m10_axis_0_ , adc2_ ),
-                        `CONNECT_AXI4S_MIN_IF( m12_axis_0_ , adc3_ ),
-                        `CONNECT_AXI4S_MIN_IF( m20_axis_0_ , adc4_ ),
-                        `CONNECT_AXI4S_MIN_IF( m22_axis_0_ , adc5_ ),
-                        `CONNECT_AXI4S_MIN_IF( m30_axis_0_ , adc6_ ),
-                        `CONNECT_AXI4S_MIN_IF( m32_axis_0_ , adc7_ ),
-                        
-                        `CONNECT_AXI4S_MIN_IF( s00_axis_0_ , dac0_ ),
-                        
-                        .s_axi_aclk_0( aclk_div2 ),
-                        .s_axi_aresetn_0( 1'b1 ),
-                        .s_axis_aclk_0( aclk ),
-                        .s_axis_aresetn_0( 1'b1 ),
-                        `CONNECT_AXI4S_MIN_IF( S_AXIS_0_ , buf0_ ),
-                        `CONNECT_AXI4S_MIN_IF( S_AXIS_1_ , buf1_ ),
-                        `CONNECT_AXI4S_MIN_IF( S_AXIS_2_ , buf2_ ),
-                        `CONNECT_AXI4S_MIN_IF( S_AXIS_3_ , buf3_ ),
-                        
-                        .UART_txd(uart_from_ps),
-                        .UART_rxd(uart_to_ps),
-                        
-                        .capture_o(capture),
-                        
-                        .pl_clk0( ps_clk ),
-                        .pl_resetn0( ps_reset ),
-                        .clk_adc0_0(adc_clk),
-                        .user_sysref_adc_0( my_sysref ));    
+        zynqmp_wrapper u_ps(.Vp_Vn_0_v_p( VP ),
+                            .Vp_Vn_0_v_n( VN ),
+                            .sysref_in_0_diff_p( SYSREF_P ),
+                            .sysref_in_0_diff_n( SYSREF_N ),
+                            .adc0_clk_0_clk_p( ADC0_CLK_P ),
+                            .adc0_clk_0_clk_n( ADC0_CLK_N ),
+                            .adc1_clk_0_clk_p( ADC2_CLK_P ),
+                            .adc1_clk_0_clk_n( ADC2_CLK_N ),
+                            .adc2_clk_0_clk_p( ADC4_CLK_P ),
+                            .adc2_clk_0_clk_n( ADC4_CLK_N ),
+                            .adc3_clk_0_clk_p( ADC6_CLK_P ),
+                            .adc3_clk_0_clk_n( ADC6_CLK_N ),
+                            .vin0_01_0_v_p( ADC0_VIN_P ),
+                            .vin0_01_0_v_n( ADC0_VIN_N ),
+                            .vin0_23_0_v_p( ADC1_VIN_P ),
+                            .vin0_23_0_v_n( ADC1_VIN_N ),
+                            .vin1_01_0_v_p( ADC2_VIN_P ),
+                            .vin1_01_0_v_n( ADC2_VIN_N ),
+                            .vin1_23_0_v_p( ADC3_VIN_P ),
+                            .vin1_23_0_v_n( ADC3_VIN_N ),
+                            .vin2_01_0_v_p( ADC4_VIN_P ),
+                            .vin2_01_0_v_n( ADC4_VIN_N ),
+                            .vin2_23_0_v_p( ADC5_VIN_P ),
+                            .vin2_23_0_v_n( ADC5_VIN_N ),
+                            .vin3_01_0_v_p( ADC6_VIN_P ),
+                            .vin3_01_0_v_n( ADC6_VIN_N ),
+                            .vin3_23_0_v_p( ADC7_VIN_P ),
+                            .vin3_23_0_v_n( ADC7_VIN_N ),
+                            
+                            .vout00_0_v_n( DAC0_VOUT_P ),
+                            .vout00_0_v_p( DAC0_VOUT_N ),
+                            
+                            `CONNECT_AXI4S_MIN_IF( m00_axis_0_ , adc0_ ),
+                            `CONNECT_AXI4S_MIN_IF( m02_axis_0_ , adc1_ ),
+                            `CONNECT_AXI4S_MIN_IF( m10_axis_0_ , adc2_ ),
+                            `CONNECT_AXI4S_MIN_IF( m12_axis_0_ , adc3_ ),
+                            `CONNECT_AXI4S_MIN_IF( m20_axis_0_ , adc4_ ),
+                            `CONNECT_AXI4S_MIN_IF( m22_axis_0_ , adc5_ ),
+                            `CONNECT_AXI4S_MIN_IF( m30_axis_0_ , adc6_ ),
+                            `CONNECT_AXI4S_MIN_IF( m32_axis_0_ , adc7_ ),
+                            
+                            `CONNECT_AXI4S_MIN_IF( s00_axis_0_ , dac0_ ),
+                            
+                            .s_axi_aclk_0( aclk_div2 ),
+                            .s_axi_aresetn_0( 1'b1 ),
+                            .s_axis_aclk_0( aclk ),
+                            .s_axis_aresetn_0( 1'b1 ),
+                            `CONNECT_AXI4S_MIN_IF( S_AXIS_0_ , buf0_ ),
+                            `CONNECT_AXI4S_MIN_IF( S_AXIS_1_ , buf1_ ),
+                            `CONNECT_AXI4S_MIN_IF( S_AXIS_2_ , buf2_ ),
+                            `CONNECT_AXI4S_MIN_IF( S_AXIS_3_ , buf3_ ),
+                            
+                            .UART_txd(uart_from_ps),
+                            .UART_rxd(uart_to_ps),
+                            
+                            .capture_o(capture),
+                            
+                            .pl_clk0( ps_clk ),
+                            .pl_resetn0( ps_reset ),
+                            .clk_adc0_0(adc_clk),
+                            .user_sysref_adc_0( my_sysref ));    
 
-    generate
-        if (THIS_DESIGN == "BASIC") begin : BSC
-            // basic design doesn't bother with the DAC,
-            // whatever.
-            basic_design u_design( .wb_clk_i(ps_clk),
-                                   .wb_rst_i(1'b0),
-                                    `CONNECT_WBS_IFS( wb_ , bm_ ),
+        generate
+            if (THIS_DESIGN == "BASIC") begin : BSC
+                // basic design doesn't bother with the DAC,
+                // whatever.
+                basic_design u_design( .wb_clk_i(ps_clk),
+                                    .wb_rst_i(1'b0),
+                                        `CONNECT_WBS_IFS( wb_ , bm_ ),
+                                        .aclk(aclk),
+                                        .aresetn(1'b1),
+                                        `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
+                                        `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
+                                        `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
+                                        `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
+                                        `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
+                                        `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
+                                        `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
+                                        `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
+                                        // buffers
+                                        `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
+                                        `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
+                                        `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
+                                        `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ));            
+            end else if (THIS_DESIGN == "AGC") begin : AGC
+                // our DACs are at 375M so they don't need a dac transfer,
+                // so we can just directly connect them
+                agc_design u_design( .wb_clk_i(ps_clk),
+                                    .wb_rst_i(1'b0),
+                                    `CONNECT_WBS_IFM( wb_ , bm_ ),
                                     .aclk(aclk),
                                     .aresetn(1'b1),
                                     `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
@@ -280,81 +301,83 @@ module teb0835_top(
                                     `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
                                     `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
                                     `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
-                                    `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ));            
-        end else if (THIS_DESIGN == "AGC") begin : AGC
-            // our DACs are at 375M so they don't need a dac transfer,
-            // so we can just directly connect them
-            agc_design u_design( .wb_clk_i(ps_clk),
-                                 .wb_rst_i(1'b0),
-                                 `CONNECT_WBS_IFM( wb_ , bm_ ),
-                                 .aclk(aclk),
-                                 .aresetn(1'b1),
-                                  `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
-                                  `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
-                                  `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
-                                  `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
-                                  `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
-                                  `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
-                                  `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
-                                  `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
-                                  // buffers
-                                  `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
-                                  `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
-                                  `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
-                                  `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ),
-                                  // DACs
-                                  `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ )
-                                  );            
-            
-        end else if (THIS_DESIGN == "FILTER_CHAIN") begin : FILTER_CHAIN
-            `DEFINE_AXI4S_MIN_IF( design_dac0_ , 128 );
-            
-            filter_chain_design #(.NBEAMS(2))
-                              u_design(     .wb_clk_i(ps_clk),
-                                            .wb_rst_i(1'b0),
-                                            `CONNECT_WBS_IFM( wb_ , bm_ ),    
-                                            .aclk(aclk),
-                                            .reset_i(1'b0),
-                                            `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
-                                            // Buffers
-                                            `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
-                                            `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
-                                            // DACs
-                                            `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ));
+                                    `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ),
+                                    // DACs
+                                    `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ )
+                                    );            
+                
+            end else if (THIS_DESIGN == "FILTER_CHAIN") begin : FILTER_CHAIN
+                `DEFINE_AXI4S_MIN_IF( design_dac0_ , 128 );
+                
+                filter_chain_design #(.NBEAMS(2))
+                                u_design(     .wb_clk_i(ps_clk),
+                                                .wb_rst_i(1'b0),
+                                                `CONNECT_WBS_IFM( wb_ , bm_ ),    
+                                                .aclk(aclk),
+                                                .reset_i(1'b0),
+                                                `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
+                                                // Buffers
+                                                `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
+                                                `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
+                                                // DACs
+                                                `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ));
 
-        end else if (THIS_DESIGN == "FILTER_CHAIN_WISHBONELESS") begin : FILTER_CHAIN_WISHBONELESS
-            `DEFINE_AXI4S_MIN_IF( design_dac0_ , 128 );
-            
-            filter_chain_wishboneless_design #(.NBEAMS(2))
-                              u_design(     .wb_clk_i(ps_clk),
-                                            .wb_rst_i(1'b0),
-                                            `CONNECT_WBS_IFM( wb_ , bm_ ),    
-                                            .aclk(aclk),
-                                            .reset_i(1'b0),
-                                            `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
-                                            `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
-                                            // Buffers
-                                            `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
-                                            `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
-                                            `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
-                                            `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ),
-                                            // DACs
-                                            `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ));
+            end else if (THIS_DESIGN == "FILTER_CHAIN_NO_BIQUAD") begin : NO_BIQUAD
+                `DEFINE_AXI4S_MIN_IF( design_dac0_ , 128 );
+                
+                filter_chain_no_biquad_design #(.NBEAMS(2))
+                                u_design(     .wb_clk_i(ps_clk),
+                                                .wb_rst_i(1'b0),
+                                                `CONNECT_WBS_IFM( wb_ , bm_ ),    
+                                                .aclk(aclk),
+                                                .reset_i(1'b0),
+                                                `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
+                                                // Buffers
+                                                `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
+                                                `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
+                                                `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
+                                                `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ),
+                                                // DACs
+                                                `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ));
+ 
+            end else if (THIS_DESIGN == "FILTER_CHAIN_LOWPASS_ONLY") begin : LOWPASS_ONLY
+                `DEFINE_AXI4S_MIN_IF( design_dac0_ , 128 );
+                
+                lowpass_design  u_design(     .wb_clk_i(ps_clk),
+                                                .wb_rst_i(1'b0),
+                                                `CONNECT_WBS_IFM( wb_ , bm_ ),    
+                                                .aclk(aclk),
+                                                `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc3_ , adc3_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc4_ , adc4_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc5_ , adc5_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc6_ , adc6_ ),
+                                                `CONNECT_AXI4S_MIN_IF( adc7_ , adc7_ ),
+                                                // Buffers
+                                                `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
+                                                `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
+                                                `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
+                                                `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ),
+                                                // DACs
+                                                `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ));
 
-        end
-    endgenerate
+            end
+        endgenerate
 
 endmodule
