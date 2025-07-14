@@ -92,24 +92,25 @@ module teb0835_top(
     refclk_wiz u_wiz(.reset(1'b0),.clk_in1(aclk),
                      .clk_out1(aclk_div2),
                      .locked(aclk_locked));
-    `DEFINE_AXI4S_MIN_IF( adc0_ , 64);
-    `DEFINE_AXI4S_MIN_IF( adc1_ , 64);
-    `DEFINE_AXI4S_MIN_IF( adc2_ , 64);
-    `DEFINE_AXI4S_MIN_IF( adc3_ , 64);
-    `DEFINE_AXI4S_MIN_IF( adc4_ , 64);
-    `DEFINE_AXI4S_MIN_IF( adc5_ , 64);
-    `DEFINE_AXI4S_MIN_IF( adc6_ , 64);
-    `DEFINE_AXI4S_MIN_IF( adc7_ , 64);
+    `DEFINE_AXI4S_MIN_IF( adc0_ , 128);
+    `DEFINE_AXI4S_MIN_IF( adc1_ , 128);
+    `DEFINE_AXI4S_MIN_IF( adc2_ , 128);
+    `DEFINE_AXI4S_MIN_IF( adc3_ , 128);
+    `DEFINE_AXI4S_MIN_IF( adc4_ , 128);
+    `DEFINE_AXI4S_MIN_IF( adc5_ , 128);
+    `DEFINE_AXI4S_MIN_IF( adc6_ , 128);
+    `DEFINE_AXI4S_MIN_IF( adc7_ , 128);
     // buffer inputs
-    `DEFINE_AXI4S_MIN_IF( buf0_ , 64);
-    `DEFINE_AXI4S_MIN_IF( buf1_ , 64);
-    `DEFINE_AXI4S_MIN_IF( buf2_ , 64);
-    `DEFINE_AXI4S_MIN_IF( buf3_ , 64);
+    `DEFINE_AXI4S_MIN_IF( buf0_ , 128);
+    `DEFINE_AXI4S_MIN_IF( buf1_ , 128);
+    `DEFINE_AXI4S_MIN_IF( buf2_ , 128);
+    `DEFINE_AXI4S_MIN_IF( buf3_ , 128);
     // PS UART
     wire uart_to_ps;
     wire uart_from_ps;
     // PS capture
-    wire capture;
+    wire capture_waiting;
+    wire capture_enable;
     
     
     // sysref externally is 375/48 so we ultrafake here
@@ -239,7 +240,8 @@ module teb0835_top(
                         .UART_txd(uart_from_ps),
                         .UART_rxd(uart_to_ps),
                         
-                        .capture_o(capture),
+                        .capture_o(capture_waiting),
+                        //.capture_i(capture_enable),
                         
                         .pl_clk0( ps_clk ),
                         .pl_resetn0( ps_reset ),
@@ -297,6 +299,8 @@ module teb0835_top(
                                     `CONNECT_WBS_IFS( wb_ , bm_ ),
                                     .aclk(aclk),
                                     .aresetn(1'b1),
+                                    .capture_waiting(capture_waiting),
+                                    .capture_enable(capture_enable),
                                     `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
                                     `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
                                     `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
