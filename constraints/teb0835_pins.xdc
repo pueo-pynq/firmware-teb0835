@@ -25,6 +25,7 @@ set_property PACKAGE_PIN V2 [get_ports ADC6_VIN_P]
 set_property PACKAGE_PIN V1 [get_ports ADC6_VIN_N]
 set_property PACKAGE_PIN T2 [get_ports ADC7_VIN_P]
 set_property PACKAGE_PIN T1 [get_ports ADC7_VIN_N]
+
 set_property PACKAGE_PIN N5 [get_ports SYSREF_P]
 set_property PACKAGE_PIN N4 [get_ports SYSREF_N]
 
