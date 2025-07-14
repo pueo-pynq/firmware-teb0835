@@ -66,8 +66,8 @@ module teb0835_top(
         // no local SYSREF, we just effing make it up        
     );
 
-    parameter THIS_DESIGN = "LOWAMPA";
-    
+    parameter THIS_DESIGN = "FILTER_CHAIN_LOWPASS_ONLY";
+
     (* KEEP = "TRUE" *)
     wire ps_clk;
     wire ps_reset;
