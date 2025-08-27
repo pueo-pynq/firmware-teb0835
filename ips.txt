@@ -1,2 +1,4 @@
 ip/clk_count_vio/clk_count_vio.xci
+pueo-surf-trigger/ip/preset_timer_dsp/preset_timer_dsp.xci
+pueo-surf-trigger/ip/preset_timer_hold_dsp/preset_timer_hold_dsp.xci
 ip/refclk_wiz/refclk_wiz.xci

@@ -1,0 +1,2 @@
+sim/shannon_whitaker_lpfull_v2_tb.v
+sim/shannon_whitaker_lpfull_v2_tb_behav.wcfg

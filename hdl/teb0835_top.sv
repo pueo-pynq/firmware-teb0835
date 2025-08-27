@@ -66,7 +66,8 @@ module teb0835_top(
         // no local SYSREF, we just effing make it up        
     );
 
-    parameter THIS_DESIGN = "FILTER_CHAIN_LOWPASS_ONLY";
+    parameter THIS_DESIGN = "LOWAMPA";
+    //"FILTER_CHAIN_DESIGN";
         
         (* KEEP = "TRUE" *)
         wire ps_clk;
@@ -76,6 +77,7 @@ module teb0835_top(
         wire aclk_in;
         wire aclk;
         wire aclk_div2;
+        wire aclk_div4;
         wire aclk_locked;
         IBUFDS_GTE4 #(.REFCLK_EN_TX_PATH(1'b0),
                     .REFCLK_HROW_CK_SEL(2'b00),
@@ -91,15 +93,16 @@ module teb0835_top(
                     .DIV(3'b000));
         refclk_wiz u_wiz(.reset(1'b0),.clk_in1(aclk),
                         .clk_out1(aclk_div2),
+                        .clk_out2(aclk_div4),
                         .locked(aclk_locked));
-        `DEFINE_AXI4S_MIN_IF( adc0_ , 128);
-        `DEFINE_AXI4S_MIN_IF( adc1_ , 128);
-        `DEFINE_AXI4S_MIN_IF( adc2_ , 128);
-        `DEFINE_AXI4S_MIN_IF( adc3_ , 128);
-        `DEFINE_AXI4S_MIN_IF( adc4_ , 128);
-        `DEFINE_AXI4S_MIN_IF( adc5_ , 128);
-        `DEFINE_AXI4S_MIN_IF( adc6_ , 128);
-        `DEFINE_AXI4S_MIN_IF( adc7_ , 128);
+        `DEFINE_AXI4S_MIN_IF( adc0_ , 64);
+        `DEFINE_AXI4S_MIN_IF( adc1_ , 64);
+        `DEFINE_AXI4S_MIN_IF( adc2_ , 64);
+        `DEFINE_AXI4S_MIN_IF( adc3_ , 64);
+        `DEFINE_AXI4S_MIN_IF( adc4_ , 64);
+        `DEFINE_AXI4S_MIN_IF( adc5_ , 64);
+        `DEFINE_AXI4S_MIN_IF( adc6_ , 64);
+        `DEFINE_AXI4S_MIN_IF( adc7_ , 64);
         // buffer inputs
         `DEFINE_AXI4S_MIN_IF( buf0_ , 128);
         `DEFINE_AXI4S_MIN_IF( buf1_ , 128);
@@ -197,6 +200,8 @@ module teb0835_top(
                                 .RX(uart_from_ps),
                                 .TX(uart_to_ps));
 
+        wire trigger_detected;
+
         zynqmp_wrapper u_ps(.Vp_Vn_0_v_p( VP ),
                             .Vp_Vn_0_v_n( VN ),
                             .sysref_in_0_diff_p( SYSREF_P ),
@@ -240,9 +245,11 @@ module teb0835_top(
                             
                             `CONNECT_AXI4S_MIN_IF( s00_axis_0_ , dac0_ ),
                             
-                            .s_axi_aclk_0( aclk_div2 ),
+                            //.s_axi_aclk_0( aclk_div2 ),
+                            .s_axi_aclk_0( aclk_div4 ), //halve data rate
                             .s_axi_aresetn_0( 1'b1 ),
-                            .s_axis_aclk_0( aclk ),
+                            .s_axis_aclk_0( aclk ), //normal data rate for input
+                            .s_axis_aclk_1( aclk_div2 ), //halve data rate for output
                             .s_axis_aresetn_0( 1'b1 ),
                             `CONNECT_AXI4S_MIN_IF( S_AXIS_0_ , buf0_ ),
                             `CONNECT_AXI4S_MIN_IF( S_AXIS_1_ , buf1_ ),
@@ -253,7 +260,7 @@ module teb0835_top(
                             .UART_rxd(uart_to_ps),
                             
                             .capture_o(capture_waiting),
-                            //.capture_i(capture_enable),
+                            .trigger(trigger_detected),
                             
                             .pl_clk0( ps_clk ),
                             .pl_resetn0( ps_reset ),
@@ -387,6 +394,7 @@ module teb0835_top(
                                     .aresetn(1'b1),
                                     .capture_waiting(capture_waiting),
                                     .capture_enable(capture_enable),
+                                    .trigger(trigger_detected),
                                     `CONNECT_AXI4S_MIN_IF( adc0_ , adc0_ ),
                                     `CONNECT_AXI4S_MIN_IF( adc1_ , adc1_ ),
                                     `CONNECT_AXI4S_MIN_IF( adc2_ , adc2_ ),
@@ -399,10 +407,10 @@ module teb0835_top(
                                     `CONNECT_AXI4S_MIN_IF( buf0_ , buf0_ ),
                                     `CONNECT_AXI4S_MIN_IF( buf1_ , buf1_ ),
                                     `CONNECT_AXI4S_MIN_IF( buf2_ , buf2_ ),
-                                    `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ )//,
+                                    `CONNECT_AXI4S_MIN_IF( buf3_ , buf3_ ),//,
                                     // dacs
-                                    //`CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ),
-                                    //`CONNECT_AXI4S_MIN_IF( dac1_ , dac1_ )
+                                    `CONNECT_AXI4S_MIN_IF( dac0_ , dac0_ ),
+                                    `CONNECT_AXI4S_MIN_IF( dac1_ , dac1_ )
                                     );            
         end	
         endgenerate

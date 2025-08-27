@@ -1,8 +1,8 @@
 //Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
-//Date        : Sun Jun  2 23:32:07 2024
-//Host        : ASCPHY-NC196428 running 64-bit major release  (build 9200)
+//Date        : Fri Jul 25 12:40:53 2025
+//Host        : E1-056855 running 64-bit major release  (build 9200)
 //Command     : generate_target zynqmp_wrapper.bd
 //Design      : zynqmp_wrapper
 //Purpose     : IP block netlist
@@ -36,6 +36,13 @@ module zynqmp_wrapper
     adc3_clk_0_clk_p,
     capture_o,
     clk_adc0_0,
+    clk_adc1_0,
+    clk_adc2_0,
+    clk_adc3_0,
+    clk_dac0_0,
+    dac0_clk_0_clk_n,
+    dac0_clk_0_clk_p,
+    irq_0,
     m00_axis_0_tdata,
     m00_axis_0_tready,
     m00_axis_0_tvalid,
@@ -65,15 +72,15 @@ module zynqmp_wrapper
     s00_axis_0_tdata,
     s00_axis_0_tready,
     s00_axis_0_tvalid,
-
     s_axi_aclk_0,
     s_axi_aresetn_0,
     s_axis_aclk_0,
+    s_axis_aclk_1,
     s_axis_aresetn_0,
     sysref_in_0_diff_n,
     sysref_in_0_diff_p,
+    trigger,
     user_sysref_adc_0,
-    
     vin0_01_0_v_n,
     vin0_01_0_v_p,
     vin0_23_0_v_n,
@@ -118,43 +125,50 @@ module zynqmp_wrapper
   input adc3_clk_0_clk_p;
   output capture_o;
   output clk_adc0_0;
-  output [127:0]m00_axis_0_tdata;
+  output clk_adc1_0;
+  output clk_adc2_0;
+  output clk_adc3_0;
+  output clk_dac0_0;
+  input dac0_clk_0_clk_n;
+  input dac0_clk_0_clk_p;
+  output irq_0;
+  output [63:0]m00_axis_0_tdata;
   input m00_axis_0_tready;
   output m00_axis_0_tvalid;
-  output [127:0]m02_axis_0_tdata;
+  output [63:0]m02_axis_0_tdata;
   input m02_axis_0_tready;
   output m02_axis_0_tvalid;
-  output [127:0]m10_axis_0_tdata;
+  output [63:0]m10_axis_0_tdata;
   input m10_axis_0_tready;
   output m10_axis_0_tvalid;
-  output [127:0]m12_axis_0_tdata;
+  output [63:0]m12_axis_0_tdata;
   input m12_axis_0_tready;
   output m12_axis_0_tvalid;
-  output [127:0]m20_axis_0_tdata;
+  output [63:0]m20_axis_0_tdata;
   input m20_axis_0_tready;
   output m20_axis_0_tvalid;
-  output [127:0]m22_axis_0_tdata;
+  output [63:0]m22_axis_0_tdata;
   input m22_axis_0_tready;
   output m22_axis_0_tvalid;
-  output [127:0]m30_axis_0_tdata;
+  output [63:0]m30_axis_0_tdata;
   input m30_axis_0_tready;
   output m30_axis_0_tvalid;
-  output [127:0]m32_axis_0_tdata;
+  output [63:0]m32_axis_0_tdata;
   input m32_axis_0_tready;
   output m32_axis_0_tvalid;
   output pl_clk0;
   output pl_resetn0;
-
   input [127:0]s00_axis_0_tdata;
   output s00_axis_0_tready;
   input s00_axis_0_tvalid;
-
   input s_axi_aclk_0;
   input s_axi_aresetn_0;
   input s_axis_aclk_0;
+  input s_axis_aclk_1;
   input s_axis_aresetn_0;
   input sysref_in_0_diff_n;
   input sysref_in_0_diff_p;
+  input trigger;
   input user_sysref_adc_0;
   input vin0_01_0_v_n;
   input vin0_01_0_v_p;
@@ -172,7 +186,6 @@ module zynqmp_wrapper
   input vin3_01_0_v_p;
   input vin3_23_0_v_n;
   input vin3_23_0_v_p;
-
   output vout00_0_v_n;
   output vout00_0_v_p;
 
@@ -202,43 +215,50 @@ module zynqmp_wrapper
   wire adc3_clk_0_clk_p;
   wire capture_o;
   wire clk_adc0_0;
-  wire [127:0]m00_axis_0_tdata;
+  wire clk_adc1_0;
+  wire clk_adc2_0;
+  wire clk_adc3_0;
+  wire clk_dac0_0;
+  wire dac0_clk_0_clk_n;
+  wire dac0_clk_0_clk_p;
+  wire irq_0;
+  wire [63:0]m00_axis_0_tdata;
   wire m00_axis_0_tready;
   wire m00_axis_0_tvalid;
-  wire [127:0]m02_axis_0_tdata;
+  wire [63:0]m02_axis_0_tdata;
   wire m02_axis_0_tready;
   wire m02_axis_0_tvalid;
-  wire [127:0]m10_axis_0_tdata;
+  wire [63:0]m10_axis_0_tdata;
   wire m10_axis_0_tready;
   wire m10_axis_0_tvalid;
-  wire [127:0]m12_axis_0_tdata;
+  wire [63:0]m12_axis_0_tdata;
   wire m12_axis_0_tready;
   wire m12_axis_0_tvalid;
-  wire [127:0]m20_axis_0_tdata;
+  wire [63:0]m20_axis_0_tdata;
   wire m20_axis_0_tready;
   wire m20_axis_0_tvalid;
-  wire [127:0]m22_axis_0_tdata;
+  wire [63:0]m22_axis_0_tdata;
   wire m22_axis_0_tready;
   wire m22_axis_0_tvalid;
-  wire [127:0]m30_axis_0_tdata;
+  wire [63:0]m30_axis_0_tdata;
   wire m30_axis_0_tready;
   wire m30_axis_0_tvalid;
-  wire [127:0]m32_axis_0_tdata;
+  wire [63:0]m32_axis_0_tdata;
   wire m32_axis_0_tready;
   wire m32_axis_0_tvalid;
   wire pl_clk0;
   wire pl_resetn0;
-
   wire [127:0]s00_axis_0_tdata;
   wire s00_axis_0_tready;
   wire s00_axis_0_tvalid;
-
   wire s_axi_aclk_0;
   wire s_axi_aresetn_0;
   wire s_axis_aclk_0;
+  wire s_axis_aclk_1;
   wire s_axis_aresetn_0;
   wire sysref_in_0_diff_n;
   wire sysref_in_0_diff_p;
+  wire trigger;
   wire user_sysref_adc_0;
   wire vin0_01_0_v_n;
   wire vin0_01_0_v_p;
@@ -256,7 +276,6 @@ module zynqmp_wrapper
   wire vin3_01_0_v_p;
   wire vin3_23_0_v_n;
   wire vin3_23_0_v_p;
-
   wire vout00_0_v_n;
   wire vout00_0_v_p;
 
@@ -287,6 +306,13 @@ module zynqmp_wrapper
         .adc3_clk_0_clk_p(adc3_clk_0_clk_p),
         .capture_o(capture_o),
         .clk_adc0_0(clk_adc0_0),
+        .clk_adc1_0(clk_adc1_0),
+        .clk_adc2_0(clk_adc2_0),
+        .clk_adc3_0(clk_adc3_0),
+        .clk_dac0_0(clk_dac0_0),
+        .dac0_clk_0_clk_n(dac0_clk_0_clk_n),
+        .dac0_clk_0_clk_p(dac0_clk_0_clk_p),
+        .irq_0(irq_0),
         .m00_axis_0_tdata(m00_axis_0_tdata),
         .m00_axis_0_tready(m00_axis_0_tready),
         .m00_axis_0_tvalid(m00_axis_0_tvalid),
@@ -319,9 +345,11 @@ module zynqmp_wrapper
         .s_axi_aclk_0(s_axi_aclk_0),
         .s_axi_aresetn_0(s_axi_aresetn_0),
         .s_axis_aclk_0(s_axis_aclk_0),
+        .s_axis_aclk_1(s_axis_aclk_1),
         .s_axis_aresetn_0(s_axis_aresetn_0),
         .sysref_in_0_diff_n(sysref_in_0_diff_n),
         .sysref_in_0_diff_p(sysref_in_0_diff_p),
+        .trigger(trigger),
         .user_sysref_adc_0(user_sysref_adc_0),
         .vin0_01_0_v_n(vin0_01_0_v_n),
         .vin0_01_0_v_p(vin0_01_0_v_p),

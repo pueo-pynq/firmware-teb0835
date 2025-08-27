@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="shannon_whitaker_lpfull_v2_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="shannon_whitaker_lpfull_v2_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="2,693.921 ns"></ZoomStartTime>
+      <ZoomEndTime time="2,820.398 ns"></ZoomEndTime>
+      <Cursor1Time time="2,715.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="245"></NameColumnWidth>
+      <ValueColumnWidth column_width="226"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="55" />
+   <wvobject type="divider" fp_name="divider145">
+      <obj_property name="label">INPUT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/clk2" type="logic">
+      <obj_property name="ElementShortName">clk2</obj_property>
+      <obj_property name="ObjectShortName">clk2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/in_i" type="array">
+      <obj_property name="ElementShortName">in_i[47:0]</obj_property>
+      <obj_property name="ObjectShortName">in_i[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/in_i2" type="array">
+      <obj_property name="ElementShortName">in_i2[95:0]</obj_property>
+      <obj_property name="ObjectShortName">in_i2[95:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/in_i_clked" type="array">
+      <obj_property name="ElementShortName">in_i_clked[47:0]</obj_property>
+      <obj_property name="ObjectShortName">in_i_clked[47:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider149">
+      <obj_property name="label">OUTPUT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/out_o" type="array">
+      <obj_property name="ElementShortName">out_o[47:0]</obj_property>
+      <obj_property name="ObjectShortName">out_o[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/out_o2" type="array">
+      <obj_property name="ElementShortName">out_o2[95:0]</obj_property>
+      <obj_property name="ObjectShortName">out_o2[95:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider661">
+      <obj_property name="label">Matched filter</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/delay_x_array" type="array">
+      <obj_property name="ElementShortName">delay_x_array[19:0][11:0]</obj_property>
+      <obj_property name="ObjectShortName">delay_x_array[19:0][11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/in_i" type="array">
+      <obj_property name="ElementShortName">in_i[47:0]</obj_property>
+      <obj_property name="ObjectShortName">in_i[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/out_o" type="array">
+      <obj_property name="ElementShortName">out_o[47:0]</obj_property>
+      <obj_property name="ObjectShortName">out_o[47:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider124">
+      <obj_property name="label">Adders</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d19 /clk_i" type="logic">
+      <obj_property name="ElementShortName">clk_i</obj_property>
+      <obj_property name="ObjectShortName">clk_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/delay_x_array" type="array">
+      <obj_property name="ElementShortName">delay_x_array[19:0][11:0]</obj_property>
+      <obj_property name="ObjectShortName">delay_x_array[19:0][11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d19 /a_i" type="array">
+      <obj_property name="ElementShortName">a_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">a_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d19 /d_i" type="array">
+      <obj_property name="ElementShortName">d_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">d_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d19 /c_i" type="array">
+      <obj_property name="ElementShortName">c_i[47:0]</obj_property>
+      <obj_property name="ObjectShortName">c_i[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d19_to_d18 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d19_to_d18 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d19_to_d18 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d18 /a_i" type="array">
+      <obj_property name="ElementShortName">a_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">a_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d18 /d_i" type="array">
+      <obj_property name="ElementShortName">d_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">d_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d18 /c_i" type="array">
+      <obj_property name="ElementShortName">c_i[47:0]</obj_property>
+      <obj_property name="ObjectShortName">c_i[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d18_to_d17 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d18_to_d17 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d18_to_d17 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d17 /a_i" type="array">
+      <obj_property name="ElementShortName">a_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">a_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d17 /d_i" type="array">
+      <obj_property name="ElementShortName">d_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">d_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d17 /c_i" type="array">
+      <obj_property name="ElementShortName">c_i[47:0]</obj_property>
+      <obj_property name="ObjectShortName">c_i[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d17_to_d16 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d17_to_d16 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d17_to_d16 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d16 /a_i" type="array">
+      <obj_property name="ElementShortName">a_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">a_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d16 /d_i" type="array">
+      <obj_property name="ElementShortName">d_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">d_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_d16 /c_i" type="array">
+      <obj_property name="ElementShortName">c_i[47:0]</obj_property>
+      <obj_property name="ObjectShortName">c_i[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d16_to_d15 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d16_to_d15 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d16_to_d15 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d15_to_d14 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d15_to_d14 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d15_to_d14 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d14_to_d13 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d14_to_d13 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d14_to_d13 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d13_to_d12 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d13_to_d12 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d13_to_d12 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d12_to_d11 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d12_to_d11 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d12_to_d11 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d11_to_d10 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d11_to_d10 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d11_to_d10 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d10_to_d9 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d10_to_d9 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d10_to_d9 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d9_to_d8 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d9_to_d8 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d9_to_d8 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d8_to_d7 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d8_to_d7 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d8_to_d7 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d7_to_d6 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d7_to_d6 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d7_to_d6 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d6_to_d5 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d6_to_d5 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d6_to_d5 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d5_to_d4 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d5_to_d4 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d5_to_d4 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d4_to_d3 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d4_to_d3 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d4_to_d3 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d3_to_d2 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d3_to_d2 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d3_to_d2 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d2_to_d1 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d2_to_d1 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d2_to_d1 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d1_to_d0 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d1_to_d0 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d1_to_d0 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].d0_to_dN1 " type="array">
+      <obj_property name="ElementShortName">\filter[0].d0_to_dN1 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].d0_to_dN1 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].dN1_to_dN2 " type="array">
+      <obj_property name="ElementShortName">\filter[0].dN1_to_dN2 [47:0]</obj_property>
+      <obj_property name="ObjectShortName">\filter[0].dN1_to_dN2 [47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/out_o" type="array">
+      <obj_property name="ElementShortName">out_o[47:0]</obj_property>
+      <obj_property name="ObjectShortName">out_o[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_dN2 /a_i" type="array">
+      <obj_property name="ElementShortName">a_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">a_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_dN2 /d_i" type="array">
+      <obj_property name="ElementShortName">d_i[25:0]</obj_property>
+      <obj_property name="ObjectShortName">d_i[25:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_dN2 /c_i" type="array">
+      <obj_property name="ElementShortName">c_i[47:0]</obj_property>
+      <obj_property name="ObjectShortName">c_i[47:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shannon_whitaker_lpfull_v2_tb/test_matched/\filter[0].taps_dN2 /p_o" type="array">
+      <obj_property name="ElementShortName">p_o[47:0]</obj_property>
+      <obj_property name="ObjectShortName">p_o[47:0]</obj_property>
+   </wvobject>
+</wave_config>
