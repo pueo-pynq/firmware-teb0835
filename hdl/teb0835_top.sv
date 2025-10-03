@@ -391,7 +391,7 @@ module teb0835_top(
                                    .wb_rst_i(1'b0),
                                     `CONNECT_WBS_IFM( wb_ , bm_ ),
                                     .aclk(aclk),
-                                    .aresetn(1'b1),
+                                    .aresetn(aclk_locked),
                                     .capture_waiting(capture_waiting),
                                     .capture_enable(capture_enable),
                                     .trigger(trigger_detected),
