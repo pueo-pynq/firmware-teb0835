@@ -6,7 +6,8 @@
       "name": "zynqmp",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2022.2"
+      "tool_version": "2022.2",
+      "validated": "true"
     },
     "design_tree": {
       "adc_cap_0": {
@@ -35,7 +36,10 @@
       "pl_gpio_adc_if_0": "",
       "ps8_0_axi_periph": {
         "xbar": "",
-        "s00_couplers": {},
+        "s00_couplers": {
+          "auto_ds": "",
+          "auto_pc": ""
+        },
         "m00_couplers": {},
         "m01_couplers": {},
         "m02_couplers": {},
@@ -1260,28 +1264,112 @@
     "ports": {
       "clk_adc0_0": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "zynqmp_usp_rf_data_converter_0_0_clk_adc0",
+            "value_src": "default_prop"
+          },
+          "FREQ_HZ": {
+            "value": "187500000",
+            "value_src": "user_prop"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "pl_clk0": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "zynqmp_zynq_ultra_ps_e_0_0_pl_clk0",
+            "value_src": "default_prop"
+          },
+          "FREQ_HZ": {
+            "value": "99999001",
+            "value_src": "user_prop"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "pl_resetn0": {
         "type": "rst",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
       },
       "s_axi_aclk_0": {
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "s_axi_aresetn_0",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "zynqmp_s_axi_aclk_0",
+            "value_src": "default"
+          },
           "FREQ_HZ": {
             "value": "187500000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
           }
         }
       },
       "s_axi_aresetn_0": {
         "type": "rst",
-        "direction": "I"
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
       },
       "s_axis_aclk_0": {
         "type": "clk",
@@ -1290,14 +1378,44 @@
           "ASSOCIATED_BUSIF": {
             "value": "S_AXIS_0:S_AXIS_1:S_AXIS_2:S_AXIS_3:m00_axis_0:m02_axis_0:m10_axis_0:m12_axis_0:m20_axis_0:m22_axis_0:m30_axis_0:m32_axis_0:s00_axis_0"
           },
+          "ASSOCIATED_RESET": {
+            "value": "s_axis_aresetn_0",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "zynqmp_s_axis_aclk_0",
+            "value_src": "default"
+          },
           "FREQ_HZ": {
             "value": "375000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
           }
         }
       },
       "s_axis_aresetn_0": {
         "type": "rst",
-        "direction": "I"
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
       },
       "user_sysref_adc_0": {
         "direction": "I"
@@ -1310,23 +1428,121 @@
       },
       "clk_adc1_0": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "zynqmp_usp_rf_data_converter_0_0_clk_adc1",
+            "value_src": "default_prop"
+          },
+          "FREQ_HZ": {
+            "value": "187500000",
+            "value_src": "user_prop"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "clk_adc2_0": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "zynqmp_usp_rf_data_converter_0_0_clk_adc2",
+            "value_src": "default_prop"
+          },
+          "FREQ_HZ": {
+            "value": "187500000",
+            "value_src": "user_prop"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "clk_adc3_0": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "zynqmp_usp_rf_data_converter_0_0_clk_adc3",
+            "value_src": "default_prop"
+          },
+          "FREQ_HZ": {
+            "value": "187500000",
+            "value_src": "user_prop"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "clk_dac0_0": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "zynqmp_usp_rf_data_converter_0_0_clk_dac0",
+            "value_src": "default_prop"
+          },
+          "FREQ_HZ": {
+            "value": "187500000",
+            "value_src": "user_prop"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "irq_0": {
         "type": "intr",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "PortWidth": {
+            "value": "1",
+            "value_src": "default"
+          },
+          "SENSITIVITY": {
+            "value": "LEVEL_HIGH",
+            "value_src": "default"
+          }
+        }
       },
       "UART_txd": {
         "direction": "O"
@@ -2937,7 +3153,7 @@
                   "width": "16",
                   "usage": "register",
                   "bank_blocks": {
-                    "REG;reg0;xilinx.com:ip:axi_jtag:1.0;axi_jtag;s_axi;NONE;NONE": {
+                    "REG;/axi_jtag/s_axi/reg0;xilinx.com:ip:axi_jtag:1.0;/axi_jtag;s_axi;NONE;NONE": {
                       "base_address": "0x0000",
                       "range": "64K",
                       "width": "16",
@@ -3229,11 +3445,87 @@
                 "direction": "I"
               }
             },
+            "components": {
+              "auto_ds": {
+                "vlnv": "xilinx.com:ip:axi_dwidth_converter:2.1",
+                "xci_name": "zynqmp_auto_ds_0",
+                "xci_path": "ip\\zynqmp_auto_ds_0\\zynqmp_auto_ds_0.xci",
+                "inst_hier_path": "ps8_0_axi_periph/s00_couplers/auto_ds",
+                "parameters": {
+                  "MI_DATA_WIDTH": {
+                    "value": "32"
+                  },
+                  "SI_DATA_WIDTH": {
+                    "value": "128"
+                  }
+                },
+                "interface_ports": {
+                  "S_AXI": {
+                    "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+                    "mode": "Slave",
+                    "bridges": [
+                      "M_AXI"
+                    ]
+                  }
+                }
+              },
+              "auto_pc": {
+                "vlnv": "xilinx.com:ip:axi_protocol_converter:2.1",
+                "xci_name": "zynqmp_auto_pc_0",
+                "xci_path": "ip\\zynqmp_auto_pc_0\\zynqmp_auto_pc_0.xci",
+                "inst_hier_path": "ps8_0_axi_periph/s00_couplers/auto_pc",
+                "parameters": {
+                  "MI_PROTOCOL": {
+                    "value": "AXI4LITE"
+                  },
+                  "SI_PROTOCOL": {
+                    "value": "AXI4"
+                  }
+                },
+                "interface_ports": {
+                  "S_AXI": {
+                    "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+                    "mode": "Slave",
+                    "bridges": [
+                      "M_AXI"
+                    ]
+                  }
+                }
+              }
+            },
             "interface_nets": {
-              "s00_couplers_to_s00_couplers": {
+              "auto_ds_to_auto_pc": {
+                "interface_ports": [
+                  "auto_ds/M_AXI",
+                  "auto_pc/S_AXI"
+                ]
+              },
+              "auto_pc_to_s00_couplers": {
+                "interface_ports": [
+                  "M_AXI",
+                  "auto_pc/M_AXI"
+                ]
+              },
+              "s00_couplers_to_auto_ds": {
                 "interface_ports": [
                   "S_AXI",
-                  "M_AXI"
+                  "auto_ds/S_AXI"
+                ]
+              }
+            },
+            "nets": {
+              "S_ACLK_1": {
+                "ports": [
+                  "S_ACLK",
+                  "auto_ds/s_axi_aclk",
+                  "auto_pc/aclk"
+                ]
+              },
+              "S_ARESETN_1": {
+                "ports": [
+                  "S_ARESETN",
+                  "auto_ds/s_axi_aresetn",
+                  "auto_pc/aresetn"
                 ]
               }
             }
@@ -3526,71 +3818,16 @@
           }
         },
         "nets": {
-          "M00_ACLK_1": {
-            "ports": [
-              "M00_ACLK",
-              "m00_couplers/M_ACLK"
-            ]
-          },
-          "M00_ARESETN_1": {
-            "ports": [
-              "M00_ARESETN",
-              "m00_couplers/M_ARESETN"
-            ]
-          },
-          "M01_ACLK_1": {
-            "ports": [
-              "M01_ACLK",
-              "m01_couplers/M_ACLK"
-            ]
-          },
-          "M01_ARESETN_1": {
-            "ports": [
-              "M01_ARESETN",
-              "m01_couplers/M_ARESETN"
-            ]
-          },
-          "M02_ACLK_1": {
-            "ports": [
-              "M02_ACLK",
-              "m02_couplers/M_ACLK"
-            ]
-          },
-          "M02_ARESETN_1": {
-            "ports": [
-              "M02_ARESETN",
-              "m02_couplers/M_ARESETN"
-            ]
-          },
-          "M03_ACLK_1": {
-            "ports": [
-              "M03_ACLK",
-              "m03_couplers/M_ACLK"
-            ]
-          },
-          "M03_ARESETN_1": {
-            "ports": [
-              "M03_ARESETN",
-              "m03_couplers/M_ARESETN"
-            ]
-          },
-          "S00_ACLK_1": {
-            "ports": [
-              "S00_ACLK",
-              "s00_couplers/S_ACLK"
-            ]
-          },
-          "S00_ARESETN_1": {
-            "ports": [
-              "S00_ARESETN",
-              "s00_couplers/S_ARESETN"
-            ]
-          },
           "ps8_0_axi_periph_ACLK_net": {
             "ports": [
               "ACLK",
               "xbar/aclk",
+              "s00_couplers/S_ACLK",
               "s00_couplers/M_ACLK",
+              "m00_couplers/M_ACLK",
+              "m01_couplers/M_ACLK",
+              "m02_couplers/M_ACLK",
+              "m03_couplers/M_ACLK",
               "m00_couplers/S_ACLK",
               "m01_couplers/S_ACLK",
               "m02_couplers/S_ACLK",
@@ -3601,7 +3838,12 @@
             "ports": [
               "ARESETN",
               "xbar/aresetn",
+              "s00_couplers/S_ARESETN",
               "s00_couplers/M_ARESETN",
+              "m00_couplers/M_ARESETN",
+              "m01_couplers/M_ARESETN",
+              "m02_couplers/M_ARESETN",
+              "m03_couplers/M_ARESETN",
               "m00_couplers/S_ARESETN",
               "m01_couplers/S_ARESETN",
               "m02_couplers/S_ARESETN",
