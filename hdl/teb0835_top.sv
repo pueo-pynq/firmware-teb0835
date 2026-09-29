@@ -66,7 +66,7 @@ module teb0835_top(
         // no local SYSREF, we just effing make it up        
     );
 
-    parameter THIS_DESIGN = "FILTER_CHAIN_LOWPASS_ONLY";
+    parameter THIS_DESIGN = "BASIC";
         
         (* KEEP = "TRUE" *)
         wire ps_clk;
